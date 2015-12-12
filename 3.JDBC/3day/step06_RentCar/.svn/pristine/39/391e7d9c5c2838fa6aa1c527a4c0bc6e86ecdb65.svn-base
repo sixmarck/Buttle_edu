@@ -1,0 +1,10 @@
+package model.service;
+
+import java.sql.SQLException;
+
+import model.dto.MemberDTO;
+
+public interface MemberServiceIF {
+	boolean registerMember (MemberDTO m) throws SQLException;
+	MemberDTO memberLogin (String memID, String memPW) throws SQLException;
+}

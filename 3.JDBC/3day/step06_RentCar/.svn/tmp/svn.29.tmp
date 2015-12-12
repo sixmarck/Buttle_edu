@@ -1,0 +1,11 @@
+rateInformationList=SELECT a.agtLoc, c.carName, c.carKind, c.carPrice FROM Car c, Agent a WHERE c.agtNo=a.agtNo ORDER BY agtLoc, carPrice
+rentCarList=SELECT carNo, carName, carPax, carPrice, carFuel FROM Car WHERE agtNo=? AND carKind=? AND carState=UPPER(?)
+resInfoList=SELECT b.resNo,c.carName,b.resDate,b.resStartDate,b.resEndDate,b.resOption,b.resTotal FROM Member a, Reservation b, car c WHERE a.memID=b.memID AND b.carNo=c.carNo AND a.memID=? ORDER BY resDate ASC
+carAll()=select * from car
+insertCar=insert into car values(carSeq.nextval, ?,?,?,?,?,?,?,default,default)
+deleteCar=delete car from carNo=?
+rentCarList=SELECT carNo, carName, carPax, carPrice, carFuel FROM Car WHERE agtNo=? AND carKind=? AND carState='Y'
+reservationInformationList=SELECT b.resNo,c.carName,b.resDate,b.resStartDate,b.resEndDate,b.resOption,b.resTotal FROM Member a, Reservation b, car c WHERE a.memID=b.memID AND b.carNo=c.carNo AND a.memID='id01' ORDER BY resDate DESC
+selectCarAvailableOne=SELECT carNo, carName, carPax, carPrice, carFuel FROM Car WHERE carNo=?
+registerReservation=INSERT INTO Reservation VALUES (resSeq.nextval, default, default, sysdate+1+?, ?, ?, ?, ?)
+updateCarState=update Car set carState='N' where carNo=?

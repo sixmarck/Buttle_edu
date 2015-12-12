@@ -1,0 +1,39 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import view.EndView;
+import model.dto.AgentBySalseDTO;
+import model.service.AdminServiceImpl;
+
+public class AdminController {
+	private static AdminServiceImpl service = AdminServiceImpl.getInstance();
+	public static void allAgentBySalseList() {
+		try {
+			ArrayList<AgentBySalseDTO> list = service.allAgentBySalseList();
+			if(list.size() != 0) {
+				EndView.agentBySalseList(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public static void agentByOneSalsesList(int agtNo) {
+		try {
+			System.out.println("no : " + agtNo);
+			ArrayList<AgentBySalseDTO> list = service.agentByOneSalsesList(agtNo);
+			if(list.size() != 0) {
+				EndView.agentBySalseList(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

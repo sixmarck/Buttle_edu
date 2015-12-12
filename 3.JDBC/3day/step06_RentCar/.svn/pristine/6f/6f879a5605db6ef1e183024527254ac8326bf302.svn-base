@@ -1,0 +1,16 @@
+package model.dao;
+
+import java.util.Properties;
+
+import util.DBUtil;
+
+public class AdminDAO {
+	private static AdminDAO instance = new AdminDAO();
+	private AdminDAO() {}
+	
+	public static AdminDAO getInstance() {
+		return instance;
+	}
+	
+	private static Properties info = DBUtil.getInfo();
+}

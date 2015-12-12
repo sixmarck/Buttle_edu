@@ -1,0 +1,21 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.BoardDTO;
+import model.dto.AccidentDTO;
+
+public interface BoardServiceIF {
+	ArrayList<BoardDTO> allInfoDesk() throws SQLException;
+
+	boolean registerInfoDesk(BoardDTO b) throws SQLException;
+	boolean updateInfoDesk(int index, String boaTitle, String boaContent) throws SQLException;
+	boolean deleteInfoDesk(int index) throws SQLException;
+	
+	ArrayList<AccidentDTO> allAccident() throws SQLException;
+	
+	boolean registerAccident(AccidentDTO a) throws SQLException;
+	boolean deleteAccident(int accNo) throws SQLException;
+	
+}

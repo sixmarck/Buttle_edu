@@ -1,0 +1,63 @@
+package controller;
+
+import java.sql.SQLException;
+
+import model.dao.BoardDAO;
+import model.dto.BoardDTO;
+import model.dto.accidentDTO;
+import model.service.BoardServiceIF;
+import model.service.BoardServiceImpl;
+import view.EndView;
+
+public class BoardController {
+
+	public static void insertBoard(BoardDTO b) {
+		try {
+			if (BoardServiceImpl.getInstance().registerInfoDesk(b)) {
+				EndView.msg("게시판 등록 성공");
+			} else {
+				EndView.msg("입력이 안되었습니다. 새로 입력해주세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void updateBoard(int index, String boaTitle, String boaContent) {
+		try {
+			if (BoardDAO.updateBoard(index,boaTitle,boaContent)) {
+				EndView.msg("게시판 수정 성공");
+			} else {
+				EndView.msg("입력이 안되었습니다. 새로 입력해주세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void deleteBoard(int index) {
+		try {
+			if (BoardDAO.deleteBoard(index)) {
+				EndView.msg("게시판 삭제 성공");
+			} else {
+				EndView.msg("입력이 안되었습니다. 새로 입력해주세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void accidentBoard(accidentDTO a) {
+		/*try {
+			if (accidentDAO.accidentBoard(a)) {
+				EndView.msg("사고 등록 성공");
+			} else {
+				EndView.msg("입력이 안되었습니다. 새로 입력해주세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}*/
+		
+		
+	}
+}

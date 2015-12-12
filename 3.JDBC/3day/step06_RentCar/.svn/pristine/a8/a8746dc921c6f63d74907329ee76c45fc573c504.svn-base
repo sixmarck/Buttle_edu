@@ -1,0 +1,5 @@
+#sql key = value
+insertMember=INSERT INTO Member VALUES(?, ?, ?, ?, ?, ?, ?,default,default,default,null)
+memberLogin=SELECT memID, memName, disGrade, agtNo FROM Member WHERE memID=? AND memPW=?
+getMemberMileage=select memMileage from member where memID=?
+selectMemberOneSals=SELECT a.memMileage, b.disValue FROM Member a, Discount b WHERE a.disGrade=b.disGrade AND a.memID=?

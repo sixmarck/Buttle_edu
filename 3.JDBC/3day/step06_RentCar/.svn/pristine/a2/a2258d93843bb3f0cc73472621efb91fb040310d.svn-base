@@ -1,0 +1,8 @@
+carRegister=INSERT INTO Car VALUES (carSeq.nextval, ?, ?, ?, ?, ?, ?, ?, ?)
+carDelete=DELETE FROM Car WHERE carNo=?
+agentByOneSalsesList=SELECT decode(a.agtNo, null, '\uC804\uCCB4\uD569\uACC4', a.agtNo) AS agtNo, decode(b.carName, null, '\uC18C\uACC4', b.carName) AS carName, sum(c.resTotal) AS resTotal FROM Agent a, Car b, Reservation c WHERE a.agtNo=b.agtNo and b.carNo=c.carNo and a.agtNo=? GROUP BY ROLLUP (a.agtNo, b.carName)
+allAgentBySalseList=SELECT decode(a.agtNo, null, '\uC804\uCCB4\uD569\uACC4', a.agtNo) AS agtNo, decode(b.carName, null, '\uC18C\uACC4', b.carName) AS carName, sum(c.resTotal) AS resTotal FROM Agent a, Car b, Reservation c WHERE a.agtNo=b.agtNo and b.carNo=c.carNo GROUP BY ROLLUP (a.agtNo, b.carName)
+agentReservationList=SELECT c.agtNo, r.memID, c.carName, r.resDate, r.resStartDate, r.resEndDate, r.resOption, r.resTotal FROM Reservation r, Car c WHERE r.carNo=c.carNo and agtNo=1 ORDER BY resStartDate desc
+adminGradeMember=SELECT *FROM (SELECT a.*, CASE WHEN a.accCnt>=2 THEN 'BAD' WHEN accCnt<2 AND resCnt=2 THEN 'VIP' WHEN accCnt<2 AND resCnt>=3 THEN 'VVIP' ELSE 'NORMAL' END AS updateGrade FROM (  SELECT a.memID,a.disGrade, COUNT (b.memID) AS resCnt, COUNT (c.memID) AS accCnt FROM Member a, Reservation b, Accident c WHERE     a.memID = b.memID AND a.memID = c.memID(+) AND disGrade NOT IN ('ADMIN', 'CEO') GROUP BY a.memID, a.disGrade) a) WHERE disGrade <> updateGrade ORDER BY memID
+allMemberList=SELECT memID,memName,memTel,memBirthday,memLicense,memAddress,memMileage,disGrade FROM Member
+allGradeMemberList=SELECT memID,memName,memTel,memBirthday,memLicense,memAddress,memMileage,disGrade FROM Member WHERE disGrade=? Order by memID

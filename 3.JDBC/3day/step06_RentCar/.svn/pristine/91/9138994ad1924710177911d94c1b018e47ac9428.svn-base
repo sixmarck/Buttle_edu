@@ -1,0 +1,14 @@
+package model.service;
+
+import java.sql.SQLException;
+
+import model.dto.CarRentTotalDTO;
+
+public interface MileageServiceIF {
+	// 마일리지 충전
+	public boolean mileageCharge(String mileCode, int inputMoney, String memid )  throws SQLException;
+	public boolean mileageCharge(String mileCode, int inputMoney, String memid, CarRentTotalDTO crt)  throws SQLException;
+			
+	/*//마일리지 사용
+	public boolean mileageUsage(String mileCode, int usageMoney, String memid) throws SQLException;		*/
+}

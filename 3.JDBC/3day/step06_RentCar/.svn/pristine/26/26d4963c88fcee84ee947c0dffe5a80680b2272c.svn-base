@@ -1,0 +1,82 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.AgentByResDTO;
+import model.dto.AgentBySalseDTO;
+import model.service.AdminServiceImpl;
+import view.EndView;
+
+
+public class AdminController {
+	private static AdminServiceImpl service = AdminServiceImpl.getInstance();
+	
+	public static void allAgentBySalseList() {
+		try {
+			ArrayList<AgentBySalseDTO> list = service.allAgentBySalseList();
+			if(list.size() != 0) {
+				EndView.agentBySalseList(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static void agentByOneSalsesList(int agtNo) {
+		try {
+			System.out.println("no : " + agtNo);
+			ArrayList<AgentBySalseDTO> list = service.agentByOneSalsesList(agtNo);
+			if(list.size() != 0) {
+				EndView.agentBySalseList(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void agentReservationList(int agtNo) {
+		try {
+			System.out.println("no : " + agtNo);
+			ArrayList<AgentByResDTO> list = service.agentReservationList(agtNo);
+			if(list.size() != 0) {
+				EndView.agentReservationList(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void allMemberList() {
+		try {
+			if (service.allMemberList().size() == 0) {
+				EndView.msg("모든 회원 정보가 없습니다.");
+			} else {
+				EndView.successMsgAll(AdminServiceImpl.getInstance().allMemberList());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("모든 회원 정보 검색 실패, 재시도 하세요");
+		}
+	}
+	
+	public static void allGradeMemberList(String grade) {
+		try {
+			if (service.allGradeMemberList(grade).size() == 0) {
+				EndView.msg("등급별 회원 정보가 없습니다.");
+			} else {
+				EndView.successMsgAll(AdminServiceImpl.getInstance().allGradeMemberList(grade));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("등급별 회원 정보 검색 실패, 재시도 하세요");
+		}
+	}
+}

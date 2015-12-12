@@ -1,0 +1,13 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface AdminServiceIF {
+	ArrayList agentBySalsesList() throws SQLException;
+	ArrayList allAgentBySalseList() throws SQLException;
+	ArrayList agentReservationList() throws SQLException;
+	ArrayList allMemberList() throws SQLException;
+	ArrayList allGradeMemberList(String grade) throws SQLException;
+	ArrayList adminGradeMember() throws SQLException;
+}

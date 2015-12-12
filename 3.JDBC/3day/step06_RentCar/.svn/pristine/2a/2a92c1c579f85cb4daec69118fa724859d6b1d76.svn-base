@@ -1,0 +1,18 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.CarDTO;
+import model.dto.CarRentTotalDTO;
+
+public interface CarServiceIF {
+	public ArrayList<CarDTO> carAll() throws SQLException;
+	public boolean insertCar(CarDTO car) throws SQLException;
+	public int deleteCar(int i) throws SQLException;
+	public ArrayList<CarDTO> resInfoList(String id) throws SQLException ;
+
+	public ArrayList<CarDTO> rentCarList(int day, String carKind, int agtNo) throws SQLException;
+	public CarRentTotalDTO paymentInformation(String memID, int carNo, int day, int agtNo, int option) throws SQLException;
+	public boolean carPayment(String memID, CarRentTotalDTO crt) throws SQLException;
+}

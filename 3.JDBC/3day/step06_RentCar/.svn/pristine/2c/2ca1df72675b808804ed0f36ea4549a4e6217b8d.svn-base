@@ -1,0 +1,104 @@
+
+
+package controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dao.CarDAO;
+import model.dto.CarDTO;
+import model.dto.CarRentTotalDTO;
+import model.service.CarServiceImpl;
+import util.Util;
+import view.EndView;
+
+
+public class CarController {
+	private static CarServiceImpl service = CarServiceImpl.getInstance();
+	
+	public static void getAllCar(){
+		try {
+			ArrayList<CarDTO> car = service.carAll();
+			if(car.size()==0){
+				EndView.msg("차량정보가 없습니다.");
+			}else{
+				//EndView.successMsgAll(car);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("모든 차량정보 검색 실패, 다시 시도해 주세요.");
+		}
+	}
+
+	
+	public static void insertCar(CarDTO car){
+		try {
+			if(CarDAO.insertCar(car)){
+				EndView.msg("차량등록이 완료되었습니다.");
+			}else{
+				EndView.msg("입력이 되지 않았습니다. 새로 입력해주세요.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("중복된 차량번호 등의 문제 발생, 새로운 데이터로 입력시도하세요.");
+		}
+	}
+	
+	public static void deleteCar(int carNo){
+		try {
+			CarDAO.deleteCar(carNo);
+			EndView.msg("삭제가 성공되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("해당 차량 정보가 없습니다.");
+		}
+	}
+
+
+	public static void rentCarList(int day, String carKind, int agtNo) {
+		try {
+			ArrayList<CarDTO> list = service.rentCarList(day, carKind, agtNo);
+			if(list.size() != 0) {
+				EndView.msg("-------- " + Util.AGENTCODE[agtNo-1] + " 대리점의 예약 가능 차량 리스트 --------");
+				EndView.rentCarPrint(list);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static CarRentTotalDTO paymentInformation(String memID, int carNo, int day, int agtNo, int option) {
+		CarRentTotalDTO crt = null;
+		try {
+			crt = service.paymentInformation(memID, carNo, day, agtNo, option);
+			if(crt != null) {
+				EndView.paymentInfoPrint(crt);
+			} else {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return crt;
+	}
+
+
+	public static boolean carPayment(String memID, CarRentTotalDTO crt) {
+		boolean result = false;
+		try {
+			if(service.carPayment(memID, crt)) {
+				EndView.msg("결제성공");
+				result = true;
+			} else {
+				EndView.msg("결제실패");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+}

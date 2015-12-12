@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+				 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dq">
+	<!-- 나이값으로 비교 30 이상이면
+	1. 30 이상이라면
+		select * from dqTest where age >= 30
+	2. 30 미만이라면
+		select * from dqTest
+	 -->
+	<select id="ageCheck" parameterType="int" resultType="dqbean">
+		select * from dqTest
+		<if test="age >= 30">
+			where age >= #{age}
+		</if>
+	</select>
+	
+	<!-- 이름들로 해당하는 모든 사람들 정보 검색
+		select * from dqTest where id(, ,  , , ...)
+		- Test.java에서 test하는 코드까지 완성해서 카톡에 코드 또는 인증샷 올리기
+		제한시간 6시 50분까지
+		
+		SELECT *
+			FROM POST P
+			WHERE ID in
+			<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+			</foreach> 
+	 -->
+	<select id="idCheck" parameterType="java.util.List" resultType="dqbean">
+		select * from dqTest where id in
+		<foreach item="java.util.List" index="index" collection="list" open="(" separator="," close=")">
+			#{java.util.List}
+		</foreach> 
+	</select>
+</mapper>

@@ -1,0 +1,5 @@
+boardRegister=INSERT INTO Board VALUES (boaSeq.nextval, default , ?, ?, ?)
+boardUpdate=UPDATE Board SET boaTitle=?, boaContent=? , boaDate=sysdate WHERE boaNo=?
+boardDelete=DELETE FROM Board WHERE boaNo=?
+accidentRegister=INSERT INTO Accident VALUES (accSeq.nextval, sysdate, ?, ?)
+accidentDelete=DELETE FROM Accident WHERE accNo=?

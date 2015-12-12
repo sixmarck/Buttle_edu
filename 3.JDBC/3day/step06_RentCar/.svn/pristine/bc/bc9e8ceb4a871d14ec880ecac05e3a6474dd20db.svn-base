@@ -1,0 +1,52 @@
+package model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import util.DBUtil;
+
+public class MileageDao {
+	private static MileageDao instance = new MileageDao();
+	private MileageDao() {}
+	
+	public static MileageDao getInstance() {
+		return instance;
+	}
+	
+	private static Properties info = DBUtil.getInfo();
+	
+	public Connection mileageCharge(String mileCode, int inputMoney, String memid) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try{
+			con = DBUtil.getConnectionNotAuto();
+			pstmt = con.prepareStatement(info.getProperty("mileageCharge"));
+			pstmt.setString(1, mileCode);
+			pstmt.setInt(2, inputMoney);
+			pstmt.setString(3, memid);
+			
+			pstmt.executeUpdate();
+		} finally {
+			DBUtil.close(pstmt);
+		}
+		
+		return con;
+	}
+	
+	public Connection mileageUpdate(Connection con, int inputMoney, String memid) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(info.getProperty("mileageUpdate"));
+			pstmt.setInt(1, inputMoney);
+			pstmt.setString(2, memid);
+			
+			pstmt.executeUpdate();
+		} finally {
+			DBUtil.close(pstmt);
+		}
+		
+		return con;
+	}
+}

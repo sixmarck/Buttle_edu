@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- account랑 account.model.domain.AccountDTO 타입 매핑 -->
+	<typeAliases>
+		<typeAlias type="account.model.domain.AccountDTO" alias="account"/>
+	</typeAliases>
+
+	<environments default="env">			
+
+		<environment id="env">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE" />
+				<property name="username" value="scott" />
+				<property name="password" value="tiger" />
+			</dataSource>
+		</environment>
+
+	</environments>
+	<!-- sql문장들을 보유한 xml문서 병합 -->
+	<mappers>
+		<mapper resource="conf/account.xml" />
+	</mappers>
+
+</configuration>

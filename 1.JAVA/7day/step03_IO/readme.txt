@@ -1,0 +1,26 @@
+학습
+1. java.io package를 활용한 데이터 입출력
+2. 실습단계
+	1단계 : 키보드로 입력되는 데이터를 모니터에 출력
+			키보드에 입력되는 데이터는 jre에서 1byte씩 read
+			개발자가 performance 고려해서 2byte씩 read 가능하게
+			1과 2byte 변환 작업
+	2단계 : readme.txt 파일로 부터 2byte씩 Input해서 buttle.txt로
+			파일 생성 및 데이터 출력
+	3단계 : 2단계에 buffering 추가 적용해서 실행 performance 향상
+	4단계 : *.property 파일로 부터 데이터 read해서 콘솔창에 출력
+			java.util.Property 클래스 활용해서 *.properties라는 파일을 read
+			1단계 : 파일이 실행 메모리에 로딩
+			2단계 : 데이터를 read
+					한행씩 read
+					* 경우에 따라 특정 행만 read도 가능
+3. 암기사항
+	1. 콘솔창(모니터) - System.out
+	2. 키보드 - System.in
+	3. 데이터 근원지와 목적지에 따라서 API 선별
+4. 개발시 고려사항
+	1. 문자 형식 - 2byte API 권장
+	2. 출력 객체 활용시 - Buffer 메모리 활용시 출력 객체 자원 반환시 데이터의 잔존 즉 데이터
+						손실 가능성이 있기 때문에 close() 즉 자원반환 전에 flush() 라는
+						메소드 호출해서 메모리상에 남아 있는 데이터를 최종 목적지까지
+						반드시 출력해야 함

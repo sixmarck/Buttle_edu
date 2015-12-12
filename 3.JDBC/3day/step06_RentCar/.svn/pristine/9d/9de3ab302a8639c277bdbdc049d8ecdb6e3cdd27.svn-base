@@ -1,0 +1,44 @@
+package model.dto;
+
+public class accidentDTO{
+	private int accNo;
+	private String accDate;
+	private String accContent;
+	private String memID;
+	public int getAccNo() {
+		return accNo;
+	}
+	public void setAccNo(int accNo) {
+		this.accNo = accNo;
+	}
+	public String getAccDate() {
+		return accDate;
+	}
+	public void setAccDate(String accDate) {
+		this.accDate = accDate;
+	}
+	public String getAccContent() {
+		return accContent;
+	}
+	public void setAccContent(String accContent) {
+		this.accContent = accContent;
+	}
+	public String getMemID() {
+		return memID;
+	}
+	public void setMemID(String memID) {
+		this.memID = memID;
+	}
+	public accidentDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public accidentDTO(String accDate, String accContent) {
+		super();
+		this.accDate = accDate;
+		this.accContent = accContent;
+	}
+	
+	
+
+}

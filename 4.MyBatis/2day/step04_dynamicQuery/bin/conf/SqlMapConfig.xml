@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- db의 설정 정보를 분리시킨 proerties 파일을 사용하겠다는 설정
+		${properties의 key} : 문법으로 value값 활용
+	 -->
+	<properties resource="conf/dbInfo.properties"/>
+
+	<typeAliases>
+		<typeAlias alias="dqbean" type="model.domain.DqTestBean" />
+	</typeAliases>
+	
+	<environments default="env">			
+
+		<environment id="env">
+			<transactionManager type="JDBC" />
+			<!--  로그기록으로 확인할 내용
+				<dataSource type="UNPOOLED"> : Connection객체 생성, 삭제
+				<dataSource type="POOLED"> : 최종 Connection객체를 return하는 메세지 출력			
+			-->
+			<!-- <dataSource type="UNPOOLED"> -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+
+	</environments>
+
+	<mappers>
+		<mapper resource="conf/dqTest.xml" />
+	</mappers>
+
+</configuration>

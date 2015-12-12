@@ -1,0 +1,55 @@
+package model.dto;
+
+public class SessionDTO {
+	private String memID;
+	private String memName;
+	private String disGrade;
+
+	public SessionDTO() {
+		super();
+	}
+
+	public SessionDTO(String memID, String memName, String disGrade) {
+		super();
+		this.memID = memID;
+		this.memName = memName;
+		this.disGrade = disGrade;
+	}
+
+	public String getMemID() {
+		return memID;
+	}
+
+	public void setMemID(String memID) {
+		this.memID = memID;
+	}
+
+	public String getMemName() {
+		return memName;
+	}
+
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
+
+	public String getDisGrade() {
+		return disGrade;
+	}
+
+	public void setDisGrade(String disGrade) {
+		this.disGrade = disGrade;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SessionDTO [memID=");
+		builder.append(memID);
+		builder.append(", memName=");
+		builder.append(memName);
+		builder.append(", disGrade=");
+		builder.append(disGrade);
+		builder.append("]");
+		return builder.toString();
+	}
+}

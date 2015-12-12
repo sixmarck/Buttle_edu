@@ -1,0 +1,3 @@
+#sql key = value
+memberRegister=INSERT INTO Member VALUES(?, ?, ?, ?, ?, ?, ?,default,default,default)
+memberLogin=SELECT memID, memName, disGrade FROM Member WHERE memID=? AND memPW=?

@@ -1,0 +1,22 @@
+package view;
+
+import java.util.ArrayList;
+
+import model.dto.MemberDTO;
+
+public class EndView {
+
+	public static void msg(String msg) {
+		System.out.println(msg);
+	}
+
+	public static void errorMsg(String msg) {
+		System.out.println(msg);
+	}
+
+	public static void successMsgAll(ArrayList<MemberDTO> allMemberList) {
+		for(MemberDTO value :allMemberList){
+			System.out.println(value.toString());
+		}
+	}
+}

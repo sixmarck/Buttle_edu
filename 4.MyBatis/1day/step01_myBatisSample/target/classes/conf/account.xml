@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+				 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Account">
+
+	<resultMap id="AccountResult" type="account">
+		<result property="id" column="ACC_ID" />
+		<result property="firstName" column="ACC_FIRST_NAME" />
+		<result property="lastName" column="ACC_LAST_NAME" />
+		<result property="emailAddress" column="ACC_EMAIL" />
+	</resultMap>
+
+	<select id="selectAllAccounts" resultMap="AccountResult">
+		select * from ACCOUNT
+	</select>
+
+	<select id="selectAccountById" parameterType="int" resultMap="AccountResult">
+		select ACC_ID, ACC_FIRST_NAME, ACC_LAST_NAME, ACC_EMAIL
+		from ACCOUNT
+		where ACC_ID = #{id}
+	</select>
+
+	<insert id="insertAccount" parameterType="account">
+		insert into ACCOUNT(ACC_ID, ACC_FIRST_NAME, ACC_LAST_NAME, ACC_EMAIL)
+		values (#{id}, #{firstName}, #{lastName}, #{emailAddress})
+	</insert>
+
+	<update id="updateAccount" parameterType="account">
+		update ACCOUNT
+		set ACC_EMAIL = #{emailAddress}
+		where ACC_ID = #{id}
+	</update>
+
+	<delete id="deleteAccountById" parameterType="int">
+		delete
+		from ACCOUNT
+		where ACC_ID = #{id}
+	</delete>
+
+</mapper>

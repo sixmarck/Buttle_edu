@@ -1,0 +1,38 @@
+package controller;
+
+import java.sql.SQLException;
+
+import model.dto.CarRentTotalDTO;
+import model.service.MileageServiceImpl;
+import view.EndView;
+
+public class MilegeController {
+
+	public static void updateMileage(String mileCode, int inputMoney,	String memid) {
+		try {
+			if(MileageServiceImpl.getInstance().mileageCharge(mileCode, inputMoney, memid)) {
+				EndView.msg(inputMoney + "원이 충전되었습니다.");
+			} else {
+				EndView.errorMsg("충전 실패, 재시도 하세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static CarRentTotalDTO updateMileage(String mileCode, int inputMoney, String memid, CarRentTotalDTO crt) {
+		try {
+			if(MileageServiceImpl.getInstance().mileageCharge(mileCode, inputMoney, memid, crt)) {
+				EndView.msg(inputMoney + "원이 충전되었습니다.");
+				crt.setMemMilage(crt.getMemMilage() + inputMoney);
+			} else {
+				EndView.errorMsg("충전 실패, 재시도 하세요");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return crt;
+		
+	}
+}

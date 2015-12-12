@@ -1,0 +1,14 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface BoardServiceIF {
+	ArrayList allInfoDesk() throws SQLException;
+	boolean registerInfoDesk() throws SQLException;
+	boolean updateInfoDesk() throws SQLException;
+	boolean deleteInfoDesk() throws SQLException;
+	ArrayList allAccident() throws SQLException;
+	boolean registerAccident() throws SQLException;
+	boolean deleteAccident() throws SQLException;
+}

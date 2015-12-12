@@ -1,0 +1,12 @@
+package model.dao;
+
+public class accidentDAO {
+	private static accidentDAO instance = new accidentDAO();
+	private accidentDAO() {}
+	
+	public static accidentDAO getInstance() {
+		return instance;
+	}
+	
+	
+}

@@ -1,0 +1,760 @@
+package view;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import model.dto.BoardDTO;
+import model.dto.CarDTO;
+import model.dto.CarRentTotalDTO;
+import model.dto.MemberDTO;
+import model.dto.MemberUpdateGradeDTO;
+import model.dto.SessionDTO;
+import util.Util;
+import controller.AdminController;
+import controller.BoardController;
+import controller.CarController;
+import controller.MemberController;
+import controller.MilegeController;
+
+
+
+public class MainView {
+	private static BufferedReader reader = new BufferedReader(
+			new InputStreamReader(System.in));
+	private static SessionDTO session = null;
+
+	public static boolean startForm() throws IOException {
+		boolean result = false;
+		System.out.print("1. 회원가입\n2. 로그인\n3. 종료\n선택 : ");
+		int index = Integer.parseInt(reader.readLine());
+		switch (index) {
+		case Util.NO1:
+			// 회원가입
+			memberRegisterForm();
+			break;
+		case Util.NO2:
+			// 로그인
+			memberLoginForm();
+			break;
+		case Util.NO3:
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void memberRegisterForm() throws IOException {
+		System.out.print("아이디 : ");
+		String memID = reader.readLine();
+		System.out.print("비밀번호 : ");
+		String memPW = reader.readLine();
+		System.out.print("이름 : ");
+		String memName = reader.readLine();
+		System.out.print("전화번호 : ");
+		String memTel = reader.readLine();
+		System.out.print("생년월일 : ");
+		String memBirthday = reader.readLine();
+		System.out.print("면허증번호 : ");
+		String memLicense = reader.readLine();
+		System.out.print("주소 : ");
+		String memAddress = reader.readLine();
+
+		MemberController.insertMember(new MemberDTO(memID, memPW, memName,
+				memTel, memBirthday, memLicense, memAddress));
+
+	}
+
+	public static void memberLoginForm() throws IOException {
+		String id = null;
+		String pw = null;
+		System.out.print("아이디 : ");
+		id = reader.readLine();
+		System.out.print("비밀번호 : ");
+		pw = reader.readLine();
+		memberLogin(id, pw);
+	}
+
+	public static void memberLogin(String id, String pw) throws IOException{
+		session = MemberController.memberLogin(id, pw);
+		if(session == null){
+			System.out.println("아이디 및 패스워드가 잘못되었습니다.");
+		} else {
+			switch (session.getDisGrade()) {
+				case Util.GRADE_CEO :
+					System.out.println(session.getMemName()+"(사장님)");
+					ceoForm();
+					break;
+				case Util.GRADE_ADMIN :
+					System.out.println(session.getMemName()+"(" + Util.AGENTCODE[session.getAgtNo()-1]+ "지점장님)");
+					adminForm();
+					break;
+				case Util.GRADE_VVIP :
+				case Util.GRADE_VIP :
+				case Util.GRADE_NORMAL :
+				case Util.GRADE_BAD :
+					System.out.println(session.getMemName()+" 회원님 환영합니다.");
+					userForm();
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	public static void adminForm() throws IOException {
+		while(true) {
+			System.out.print("1. 회원관리\n2. 차량관리\n3. 매출관리\n4. 예약현황\n5. 사고관리\n6. 로그아웃\n선택 : ");
+			if(admin(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean admin(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 회원관리
+			adminMemberForm();
+			break;
+		case Util.NO2:
+			// 차량관리
+			carForm();
+			break;
+		case Util.NO3:
+			// 매출관리
+			adminSalseForm();
+			break;
+		case Util.NO4:
+			// 예약현황
+			adminRentForm();
+			break;
+		case Util.NO5:
+			// 사고관리
+			accidentForm();
+			break;
+		case Util.NO6:
+			// 로그아웃
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void adminMemberForm() throws IOException {
+		while (true) {
+			System.out.print("1. 회원전체보기\n2. 회원등급별보기\n3. 등급관리\n4. 돌아가기\n선택 : ");
+			if(adminMember(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean adminMember(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+			case Util.NO1 :
+				// 회원전체보기
+				AdminController.allMemberList();
+				break;
+			case Util.NO2 :
+				// 회원등급별보기
+				gradeMemberForm();
+				break;
+			case Util.NO3 :
+				// 등급관리
+				gradeUpdateForm();
+				break;
+			case Util.NO4 :
+				// 돌아가기
+				result = true;
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	public static void gradeUpdateForm() throws IOException {
+		System.out.println("---------등업대상 명단-----------");
+		ArrayList<MemberUpdateGradeDTO> list = AdminController.adminGradeSelectMember(); 
+		if(list.size() != 0) {
+			gradeUpdate(list);
+		}
+	}
+	
+	public static void gradeUpdate(ArrayList<MemberUpdateGradeDTO> list) throws IOException {
+		System.out.print("모두 등업 신청 할까요? [1] 예, [2] 아니오");
+		if(Integer.parseInt(reader.readLine()) == 1) {
+			AdminController.adminGradeUpdateMember(list);
+		}
+	}
+
+	public static void carForm() throws IOException {
+		while (true) {
+			System.out.print("1. 차량등록\n2. 차량삭제\n3. 돌아가기\n선택 : ");
+			if(car(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean car(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 차량등록
+			carRegisterForm();
+			break;
+		case Util.NO2:
+			// 차량삭제
+			carDeleteForm();
+			break;
+		case Util.NO3:
+			// 돌아가기
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void carRegisterForm() throws IOException {
+		System.out.print("자동차명 : ");
+		String carName = reader.readLine();
+		System.out.print("차량번호 : ");
+		String carNum = reader.readLine();
+		System.out.print("탑승인원 : ");
+		String carPax = reader.readLine();
+		System.out.print("차량종류 ex) [1] 소형, [2] 중형, [3] 준중형, [4] SUV, [5] 승합차 : ");
+		String carKind = Util.CARKIND[Integer.parseInt(reader.readLine())-1];
+		System.out.print("기본료 : ");
+		int carPrice = Integer.parseInt(reader.readLine());
+		System.out.print("연료 : ");
+		String carFuel = reader.readLine();
+		CarController.insertCar(new CarDTO(session.getAgtNo(),carName,carNum,carPax,carKind,carPrice,carFuel));
+	}
+
+	public static void carDeleteForm() throws IOException {
+		System.out.print("삭제할 차량번호 선택 : ");
+		int carNo = Integer.parseInt(reader.readLine());
+		CarController.deleteCar(carNo);
+	}
+
+	public static void adminSalseForm() throws IOException {
+		while (true) {
+			System.out.print("1. 매출리스트\n2. 돌아가기\n선택 : ");
+			if(adminSalse(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean adminSalse(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 매출리스트
+			agentBySalse();
+			break;
+		case Util.NO2:
+			// 돌아가기
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void adminRentForm() throws IOException {
+		while (true) {
+			System.out.print("1. 렌트현황\n2. 돌아가기\n선택 : ");
+			if(adminRent(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean adminRent(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 렌트현황
+			agentByRentForm();
+			break;
+		case Util.NO2:
+			// 돌아가기
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void accidentForm() throws IOException {
+		while (true) {
+			System.out.print("1. 사고접수\n2. 사고삭제\n3. 돌아가기\n선택 : ");
+			if(accident(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean accident(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 사고접수
+			accidentRegisterForm();
+			break;
+		case Util.NO2:
+			accidentDeleteForm();
+			// 사고삭제
+			break;
+		case Util.NO3:
+			// 돌아가기
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void accidentRegisterForm() throws IOException {
+		System.out.print("사고자 : ");
+		String memID = reader.readLine();
+		System.out.print("내용 : ");
+		String accContent = reader.readLine();
+		
+		//BoardController.accidentBoard(new accidentDTO(memID , accContent));
+		
+		
+	}
+
+	public static void accidentDeleteForm() throws IOException {
+		System.out.print("삭제할 사고번호 선택 : ");
+		reader.readLine();
+	}
+
+	public static void ceoForm() throws IOException {
+		while (true) {
+			System.out.print("1. 회원관리\n2. 매출관리\n3. 렌트현황\n4. 로그아웃\n선택 : ");
+			if(ceo(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean ceo(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 회원관리
+			ceoMemberForm();
+			break;
+		case Util.NO2:
+			// 매출관리
+			ceoSalseForm();
+			break;
+		case Util.NO3:
+			// 렌트현황
+			ceoRentForm();
+			break;
+		case Util.NO4:
+			// 로그아웃
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void ceoMemberForm() throws IOException {
+		while (true) {
+			System.out.print("1. 회원전체보기\n2. 회원등급별보기\n3. 돌아가기\n선택 : ");
+			if(ceoMember(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean ceoMember(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+			case Util.NO1 :
+				// 회원전체보기
+				AdminController.allMemberList();
+				break;
+			case Util.NO2 :
+				// 회원등급별보기
+				gradeMemberForm();
+				break;
+			case Util.NO3 :
+				// 돌아가기
+				result = true;
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	public static void gradeMemberForm() throws IOException {
+		System.out.print("등급선택 ex) [1] Bad, [2] Normal, [3] VIP, [4] VVIP : ");
+		int disGrade = Integer.parseInt(reader.readLine());
+		AdminController.allGradeMemberList(Util.GRADECODE[disGrade-1]);
+	}
+
+	public static void ceoSalseForm() throws IOException {
+		while (true) {
+			System.out.print("1. 전체대리점매출리스트\n2. 대리점별매출리스트\n3. 돌아가기\n선택 : ");
+			if(ceoSalse(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean ceoSalse(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+			case Util.NO1 :
+				// 전체대리점매출리스트
+				System.out.println("ceo");
+				AdminController.allAgentBySalseList();
+				break;
+			case Util.NO2 :
+				// 대리점별매출리스트
+				agentBySalse();
+				break;
+			case Util.NO3 :
+				// 돌아가기
+				result = true;
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	public static void agentBySalse() throws IOException {
+		System.out.print("대리점선택 ex) [1] 경기, [2] 서울, [3] 인천 : ");
+		AdminController.agentByOneSalsesList(Integer.parseInt(reader.readLine()));
+	}
+
+	public static void ceoRentForm() throws IOException {
+		while (true) {
+			System.out.print("1. 전체렌트현황\n2. 대리점별렌트현황\n3. 돌아가기\n선택 : ");
+			if(ceoRent(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean ceoRent(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+			case Util.NO1 :
+				// 전체렌트현황
+				break;
+			case Util.NO2 :
+				// 대리점별렌트현황
+				agentByRentForm();
+				
+				break;
+			case Util.NO3 :
+				result = true;
+				// 돌아가기
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	public static void agentByRentForm() throws IOException {
+		System.out.print("대리점선택 ex) [1] 경기, [2] 서울, [3] 인천 : ");
+		AdminController.agentReservationList(Integer.parseInt(reader.readLine()));
+	}
+
+	public static void userForm() throws IOException {
+		while(true) {
+			System.out.print("1. 요금정보\n2. 실시간 예약\n3. 예약취소\n4. 마일리지 충전\n5. 고객센터\n6. 로그아웃\n선택 : ");
+			if(user(Integer.parseInt(reader.readLine()))) {
+				session = null;
+				break;
+			}
+		}
+	}
+
+	public static boolean user(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			// 요금정보
+			CarController.rateInfoList();
+			break;
+		case Util.NO2:
+			// 실시간 예약
+			rentalForm();
+			break;
+		case Util.NO3:
+			// 예약취소
+			cancellationFrom();
+			break;
+		case Util.NO4:
+			// 마일리지 충전
+			mileageForm();
+			break;
+		case Util.NO5:
+			// 고객센터
+			boardForm();
+			break;
+		case Util.NO6:
+			// 로그아웃
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void rentalForm() throws IOException {
+		System.out.print("대여 기간 입력 ex) [1] 1일, [2] 2일, [3] 3일, ... : ");
+		int day = Integer.parseInt(reader.readLine());
+		System.out
+				.print("차종 입력 ex) [1] 소형, [2] 중형, [3] 준중형, [4] SUV, [5] 승합차 : ");
+		int carKind = Integer.parseInt(reader.readLine());
+		System.out.print("지점 입력 ex) [1] 경기, [2] 서울, [3] 인천 : ");
+		int agtNo = Integer.parseInt(reader.readLine());
+		CarController.rentCarList(day, Util.CARKIND[carKind-1], agtNo);
+		carListForm(day, agtNo);
+	}
+
+	public static void carListForm(int day, int agtNo) throws IOException {
+		CarController.getAllCar();
+		System.out.print("차량 선택 : ");
+		carOptionForm(Integer.parseInt(reader.readLine()), day, agtNo);
+	}
+
+	public static void carOptionForm(int carNo, int day, int agtNo) throws IOException {
+		System.out.println("옵션 여부");
+		System.out.print("네비게이션 ex) [1] Yes, [2] No : ");
+		String naviResult = reader.readLine();
+		System.out.print("카시트 ex) [1] Yes, [2] No : ");
+		String sheetResult = reader.readLine();
+
+		int option = 0;
+		if(naviResult.equals("1") && sheetResult.equals("1")) {
+			option = 3;
+		} else if (naviResult.equals("1")) {
+			option = 1;
+		} else if (sheetResult.equals("1")) {
+			option = 2;
+		}
+		
+		reservationFrom(carNo, day, agtNo, option);
+	}
+
+	public static void reservationFrom(int carNo, int day, int agtNo, int option) throws IOException {
+		CarRentTotalDTO crt = CarController.paymentInformation(session.getMemID(), carNo, day, agtNo, option);
+		System.out.print("[1] 예약, [2] 돌아가기\n선택 : ");
+		switch (Integer.parseInt(reader.readLine())) {
+			case Util.NO1 :
+				// 예약
+				paymentForm(crt);
+				break;
+			case Util.NO2 :
+				// 돌아가기
+				break;
+			default:
+				break;
+		}
+	}
+
+	public static void paymentForm(CarRentTotalDTO crt) throws IOException {
+		while(true) {
+			System.out.println("최종금액 : " + crt.getResTotal());
+			System.out.println("마일리지 : " + crt.getMemMilage());
+			System.out.print("[1] 결재, [2] 마일리지 충전, [3] 취소\n선택 : ");
+			if(payment(Integer.parseInt(reader.readLine()), crt)) {
+				break;
+			}
+		}
+	}
+	
+	public static boolean payment(int index, CarRentTotalDTO crt)	throws IOException {
+		boolean result = false;
+		switch (index) {
+			case Util.NO1 :
+				// 결재
+				if(crt.getMemMilage() > crt.getResTotal()) {
+					result = CarController.carPayment(session.getMemID(), crt);
+				} else {
+					System.out.println("마일리지를 충전하세요.");
+				}
+				break;
+			case Util.NO2 :
+				//마일리지 충전
+				mileage(crt);
+				break;
+			case Util.NO3 :
+				//취소
+				result = true;
+				break;
+			default:
+				break;
+		}
+		
+		return result;
+	}
+
+	public static void cancellationFrom() throws IOException {
+		System.out.println("예약리스트");
+		//예약리스트를 뿌리기
+		CarController.resInfoList(session.getMemID());
+		System.out.print("취소번호 입력 : ");
+		cancellation(Integer.parseInt(reader.readLine()));
+	}
+
+	public static void cancellation(int index) throws IOException {
+		//돌려받을 금액 뿌려주기
+		CarController.carCancleReturnMoney(session.getMemID(), index);
+		
+		System.out.println();
+		System.out.print("[1] OK, [2] Cancle\n선택 : ");
+		switch (Integer.parseInt(reader.readLine())) {
+			case Util.NO1 :
+				// 예약취소
+				int carNumber = CarController.getCarNum(index);
+				CarController.cancleReservation(index, session.getMemID(), carNumber);
+				break;
+			case Util.NO2 :
+				// 취소
+				break;
+			default:
+				break;
+		}
+	}
+
+	public static void mileageForm() throws IOException {
+		System.out.println("현재금액 : ");
+		System.out.print("[1] 충전, [2] 돌아가기");
+		switch (Integer.parseInt(reader.readLine())) {
+		case Util.NO1:
+			// 충전
+			mileage();
+			break;
+		case Util.NO2:
+			// 돌아가기
+			break;
+		default:
+			break;
+		}
+	}
+
+	public static void mileage() throws IOException {
+		System.out.println("현재금액");
+		System.out.print("충전 할 금액 입력 : ");
+		int cash = Integer.parseInt(reader.readLine());
+		MilegeController.updateMileage(Util.MILECODE[0] , cash , session.getMemID());
+	}
+	
+	public static CarRentTotalDTO mileage(CarRentTotalDTO crt) throws IOException {
+		System.out.println("현재금액 : " + crt.getMemMilage());
+		System.out.println("결재할 금액 : " + crt.getResTotal());
+		System.out.println("최소 충전 금액 : " + (crt.getResTotal() - crt.getMemMilage()));
+		System.out.print("충전 할 금액 입력 : ");
+		int cash = Integer.parseInt(reader.readLine());
+		MilegeController.updateMileage(Util.MILECODE[0] , cash , session.getMemID(), crt);
+		return crt;
+	}
+
+	public static void boardForm() throws IOException {
+		while (true) {
+			System.out.print("1. 등록\n2. 수정\n3. 삭제\n4. 돌아가기\n선택 : ");
+			if(board(Integer.parseInt(reader.readLine()))) {
+				break;
+			}
+		}
+	}
+
+	public static boolean board(int index) throws IOException {
+		boolean result = false;
+		switch (index) {
+		case Util.NO1:
+			registerBoardForm();
+			// 게시판 등록
+			break;
+		case Util.NO2:
+			updateBoardForm();
+			// 게시판 수정
+			break;
+		case Util.NO3:
+			deleteBoardForm();
+			// 게시판 삭제
+			break;
+		case Util.NO4:
+			// 돌아가기
+			result = true;
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+
+	public static void registerBoardForm() throws IOException {
+		
+		System.out.print("제목 : ");
+		String boaTitle = reader.readLine();
+		System.out.print("내용 : ");
+		String boaContent = reader.readLine();
+
+		BoardController.insertBoard(new BoardDTO(boaTitle, boaContent,session.getMemID()));
+
+	}
+
+	public static void updateBoardForm() throws IOException {
+		System.out.print("수정할 글 번호 입력 : ");
+		int index = Integer.parseInt(reader.readLine());
+		System.out.print("제목 : ");
+		String boaTitle = reader.readLine();
+		System.out.print("내용 : ");
+		String boaContent = reader.readLine();
+
+		BoardController.updateBoard(index, boaTitle, boaContent);
+
+	}
+
+	public static void deleteBoardForm() throws IOException {
+		System.out.print("삭제할 글 번호 입력 : ");
+		int index = Integer.parseInt(reader.readLine());
+
+		BoardController.deleteBoard(index);
+		
+	}
+
+	public static void main(String[] args) {
+		while (true) {
+			try {
+				if(startForm()) {
+					break;
+				}
+			} catch (Exception e) {
+				System.out.println("다시 입력해주세요.");
+			}
+		}
+	}
+}

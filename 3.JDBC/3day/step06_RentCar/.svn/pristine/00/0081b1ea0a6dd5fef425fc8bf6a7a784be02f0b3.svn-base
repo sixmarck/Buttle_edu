@@ -1,0 +1,29 @@
+package model.service;
+
+import java.sql.SQLException;
+
+import model.dao.MemberDAO;
+import model.dto.MemberDTO;
+import model.dto.SessionDTO;
+
+public class MemberServiceImpl implements MemberServiceIF {
+	private static MemberServiceImpl instance = new MemberServiceImpl();
+	private static MemberDAO dao = MemberDAO.getInstance();
+	public static MemberServiceImpl getInstance(){
+		return instance;
+	}
+	
+	private MemberServiceImpl(){}
+	
+	@Override
+	public boolean registerMember(MemberDTO m) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public SessionDTO memberLogin(String memID, String memPW) throws SQLException {
+		return dao.memberLogin(memID, memPW);
+	}
+
+}

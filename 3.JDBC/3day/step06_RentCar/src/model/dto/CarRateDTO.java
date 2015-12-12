@@ -1,0 +1,54 @@
+package model.dto;
+
+public class CarRateDTO {
+	String carName;
+	String carKind;
+	int carPrice;
+	
+	public CarRateDTO() {
+		super();
+	}
+	
+	public String getCarName() {
+		return carName;
+	}
+	
+	public void setCarName(String carName) {
+		this.carName = carName;
+	}
+	
+	public String getCarKind() {
+		return carKind;
+	}
+	
+	public void setCarKind(String carKind) {
+		this.carKind = carKind;
+	}
+	
+	public int getCarPrice() {
+		return carPrice;
+	}
+	
+	public void setCarPrice(int carPrice) {
+		this.carPrice = carPrice;
+	}
+	
+	public CarRateDTO(String carName, String carKind, int carPrice) {
+		this.carName = carName;
+		this.carKind = carKind;
+		this.carPrice = carPrice;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("CarRateDTO [carName=");
+		builder.append(carName);
+		builder.append(", carKind=");
+		builder.append(carKind);
+		builder.append(", carPrice=");
+		builder.append(carPrice);
+		builder.append("]");
+		return builder.toString();
+	}
+}

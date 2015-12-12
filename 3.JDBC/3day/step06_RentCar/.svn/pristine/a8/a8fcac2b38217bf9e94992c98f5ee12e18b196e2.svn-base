@@ -1,0 +1,39 @@
+package model.service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dao.CarDAO;
+import model.dto.CarDTO;
+import util.DBUtil;
+
+public class CarServiceImpl implements CarServiceIF {
+
+	private static CarServiceImpl instance = new CarServiceImpl();
+	private CarServiceImpl() {}
+	public static CarServiceImpl getInstance() {
+		return instance;
+	}
+	
+	private CarDAO dao = CarDAO.getInstance();
+	@Override
+	public ArrayList<CarDTO> carAll() throws SQLException {
+		
+		return dao.carAll();
+	}
+	@Override
+	public boolean insertCar(CarDTO car) throws SQLException {
+		
+		return dao.insertCar(car);
+	}
+	@Override
+	public int deleteCar(int i) throws SQLException {
+		
+		return dao.deleteCar(i);
+	}
+	
+
+}

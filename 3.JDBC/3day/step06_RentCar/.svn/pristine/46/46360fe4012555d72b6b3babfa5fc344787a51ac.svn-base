@@ -1,0 +1,12 @@
+package view;
+
+public class EndView {
+
+	public static void msg(String msg) {
+		System.out.println(msg);
+	}
+
+	public static void errorMsg(String msg) {
+		System.out.println(msg);
+	}
+}

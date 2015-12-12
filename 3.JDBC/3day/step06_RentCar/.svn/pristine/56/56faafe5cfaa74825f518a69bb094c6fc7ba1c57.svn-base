@@ -1,0 +1,12 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.CarDTO;
+
+public interface CarServiceIF {
+	public ArrayList<CarDTO> carAll() throws SQLException;
+	public boolean insertCar(CarDTO car) throws SQLException;
+	public int deleteCar(int i) throws SQLException;
+}

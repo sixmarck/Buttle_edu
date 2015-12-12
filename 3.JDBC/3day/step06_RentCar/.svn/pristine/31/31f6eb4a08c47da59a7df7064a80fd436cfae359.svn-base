@@ -1,0 +1,44 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class AdminServiceImpl implements AdminServiceIF {
+
+	@Override
+	public ArrayList agentBySalsesList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList allAgentBySalseList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList agentReservationList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList allMemberList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList allGradeMemberList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList adminGradeMember() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

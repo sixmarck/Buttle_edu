@@ -1,0 +1,71 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+<<<<<<< .mine
+import model.dao.AdminDAO;
+import model.dto.AgentBySalseDTO;
+=======
+import model.dao.AdminDAO;
+>>>>>>> .r81
+import model.dto.MemberDTO;
+
+public class AdminServiceImpl implements AdminServiceIF {
+<<<<<<< .mine
+	
+	private static AdminServiceImpl instance = new AdminServiceImpl();
+	private static AdminDAO dao = AdminDAO.getInstance();
+	public static AdminServiceImpl getInstance(){
+		return instance;
+	}
+	
+	private AdminServiceImpl(){}
+	
+	
+=======
+	
+	private static AdminServiceImpl instance = new AdminServiceImpl();
+	private static AdminDAO dao = AdminDAO.getInstance();
+	public static AdminServiceImpl getInstance(){
+		return instance;
+	}
+	
+	private AdminServiceImpl(){}
+>>>>>>> .r81
+	@Override
+	public ArrayList<AgentBySalseDTO> agentByOneSalsesList(int agtNo) throws SQLException {
+		return dao.agentByOneSalsesList(agtNo);
+	}
+
+	@Override
+	public ArrayList<AgentBySalseDTO> allAgentBySalseList() throws SQLException {
+		return dao.allAgentBySalseList();
+	}
+
+	@Override
+	public ArrayList agentReservationList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<MemberDTO> allMemberList() throws SQLException {
+		return dao.allMemberList();
+	}
+<<<<<<< .mine
+
+=======
+
+>>>>>>> .r81
+	@Override
+	public ArrayList<MemberDTO> allGradeMemberList(String grade) throws SQLException {
+		return dao.allGradeMemberList(grade);
+	}
+
+	@Override
+	public ArrayList adminGradeMember() throws SQLException {
+		return null;
+	}
+
+}

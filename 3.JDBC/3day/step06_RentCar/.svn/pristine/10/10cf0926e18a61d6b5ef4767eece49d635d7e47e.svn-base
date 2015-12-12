@@ -1,0 +1,21 @@
+package controller;
+
+import java.sql.SQLException;
+
+import model.dto.SessionDTO;
+import model.service.MemberServiceImpl;
+
+public class MemberController {
+	private static MemberServiceImpl service = MemberServiceImpl.getInstance();
+	
+	public static SessionDTO memberLogin(String memID, String memPW) {
+		SessionDTO session = null;
+		try {
+			session = service.memberLogin(memID, memPW);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return session;
+	}
+
+}

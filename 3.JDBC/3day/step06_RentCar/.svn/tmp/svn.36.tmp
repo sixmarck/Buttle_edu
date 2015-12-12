@@ -1,0 +1,65 @@
+package view;
+
+import java.util.ArrayList;
+
+import model.dto.AgentByResDTO;
+import model.dto.AgentBySalseDTO;
+import model.dto.CarDTO;
+import model.dto.CarRentTotalDTO;
+import model.dto.MemberDTO;
+import model.dto.MemberUpdateGradeDTO;
+
+
+public class EndView {
+
+	public static void msg(String msg) {
+		System.out.println(msg);
+	}
+
+	public static void errorMsg(String msg) {
+		System.out.println(msg);
+	}
+
+	public static void successMsgAll2(ArrayList<CarDTO> carDataAll) {
+		for(CarDTO value :carDataAll){
+			System.out.println(value.toString());
+		}
+	}
+	
+	  public static void successMsgAll(ArrayList<MemberDTO> allMemberList) {
+		      for(MemberDTO value :allMemberList){
+		         System.out.println(value.toString());
+		      }
+		   }
+	   
+	public static void agentBySalseList(ArrayList<AgentBySalseDTO> list) {
+		for (AgentBySalseDTO agentBySalseDTO : list) {
+			System.out.println(agentBySalseDTO);
+		}
+	}
+	
+	public static void upgradeGradePrint(ArrayList<MemberUpdateGradeDTO> list) {
+		for (MemberUpdateGradeDTO memberUpdateGradeDTO : list) {
+			System.out.println(memberUpdateGradeDTO);
+		}
+	}
+
+	public static void rentCarPrint(ArrayList<CarDTO> list) {
+		for (CarDTO carDTO : list) {
+			System.out.println(carDTO);
+		}
+	}
+
+	public static void paymentInfoPrint(CarRentTotalDTO crt) {
+		System.out.println(crt);
+	}
+	
+	public static void agentReservationList(ArrayList<AgentByResDTO> list) {
+		for (AgentByResDTO agentByResDTO : list) {
+			System.out.println(agentByResDTO);
+		}
+	}
+
+	
+	
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+				 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml문서별 tag의 id값 중복 가능성은 당연히 존재
+		- 각 xml상의 tag구분을 위해서 xml 자체에 별칭부여
+		- <mapper namespace="xml문서 별칭">
+		- 호출시 별칭.tagid
+ -->
+<mapper namespace="Dept">
+	<select id="selectDeptOne" parameterType="int" resultType="dept">
+		select * from dept where deptno=#{id}	
+	</select>
+	
+	<select id="selectDeptAll" resultType="dept">
+		select * from dept
+	</select>
+	
+	<insert id="insertDept" parameterType="dept">
+		insert into dept values(#{deptno}, #{dname}, #{loc})
+	</insert>
+	
+	<update id="updateDept" parameterType="dept">
+		update dept set loc=#{loc} where deptno=#{deptno}
+	</update>
+	
+	<delete id="deleteDept" parameterType="int">
+		delete from dept where deptno=#{deptno}
+	</delete>
+
+</mapper>

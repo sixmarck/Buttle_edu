@@ -1,0 +1,64 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.MemberDTO;
+
+public class AdminServiceImpl implements AdminServiceIF {
+
+	@Override
+	public ArrayList agentBySalsesList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList allAgentBySalseList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList agentReservationList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+//아래 3개 태경 부분.
+	@Override
+	public ArrayList<MemberDTO> allMemberList() throws SQLException {
+		return null;
+	}
+/*	public static ArrayList<Dept01DTO> dept01All() throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		ArrayList<Dept01DTO> dataAll = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(info.getProperty("dept01All"));
+			rset = pstmt.executeQuery();
+
+			dataAll = new ArrayList<Dept01DTO>();
+
+			while (rset.next()) {
+				dataAll.add(new Dept01DTO(rset.getInt(1), rset.getString(2),rset.getString(3)));
+			}
+
+		} finally {
+			DBUtil.close(con, pstmt, rset);
+		}
+		return dataAll;
+	}*/
+	@Override
+	public ArrayList allGradeMemberList() throws SQLException {
+		return null;
+	}
+
+	@Override
+	public ArrayList adminGradeMember() throws SQLException {
+		return null;
+	}
+	
+}

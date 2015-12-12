@@ -1,0 +1,16 @@
+package model.dao;
+
+import java.util.Properties;
+
+import util.DBUtil;
+
+public class BoardDAO {
+	private static BoardDAO instance = new BoardDAO();
+	private BoardDAO() {}
+	
+	public static BoardDAO getInstance() {
+		return instance;
+	}
+	
+	private static Properties info = DBUtil.getInfo();
+}

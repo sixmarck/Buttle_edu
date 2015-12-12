@@ -1,0 +1,182 @@
+package model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.Properties;
+
+import model.dto.CarDTO;
+import model.dto.CarRentTotalDTO;
+import model.dto.MemberOneSalsDTO;
+import util.DBUtil;
+import util.Util;
+
+public class CarDAO {
+	private static CarDAO instance = new CarDAO();
+	private CarDAO() {}
+	public static CarDAO getInstance() {
+		return instance;
+	}
+	
+	private static Properties info = DBUtil.getInfo();
+	private Date now = new Date();
+
+	
+	public ArrayList<CarDTO> carAll() throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		ArrayList<CarDTO> carDataAll = null;
+		
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement("select * from car");
+			rset = pstmt.executeQuery();
+			carDataAll = new ArrayList<CarDTO>();
+			while (rset.next()) {
+				carDataAll.add(new CarDTO(rset.getInt(2),rset.getString(3),rset.getString(4),
+						rset.getString(5),rset.getString(6), rset.getInt(7), rset.getString(8)));
+			}
+		} finally {
+			DBUtil.close(con, pstmt, rset);
+		}
+		return carDataAll;
+	}
+
+	public static boolean insertCar(CarDTO car) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		boolean result = false;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con
+					.prepareStatement("insert into car values(carSeq.nextval, ?,?,?,?,?,?,?,default,default)");
+			pstmt.setInt(1, car.getAgtNo());
+			pstmt.setString(2, car.getCarName());
+			pstmt.setString(3, car.getCarNum());
+			pstmt.setString(4, car.getCarPax());
+			pstmt.setString(5, car.getCarKind());
+			pstmt.setInt(6, car.getCarPrice());
+			pstmt.setString(7, car.getCarFuel());
+			
+			int i = pstmt.executeUpdate();
+			if (i == 1) {
+				result = true;
+			}
+		} finally {
+			DBUtil.close(con, pstmt, null);
+		}
+		return result;
+	}
+
+	public static int deleteCar(int i) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement("delete car from carNo=?");
+			pstmt.setInt(1, i);
+			result = pstmt.executeUpdate();
+		} finally {
+			DBUtil.close(con, pstmt);
+		}
+		return result;
+	}
+	public ArrayList<CarDTO> rentCarList(int day, String carKind, int agtNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<CarDTO> list = null;
+		
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(info.getProperty("rentCarList"));
+			pstmt.setInt(1, agtNo);
+			pstmt.setString(2, carKind);
+			rset = pstmt.executeQuery();
+			list = new ArrayList<CarDTO>();
+			while(rset.next()) {
+				list.add(new CarDTO(rset.getInt(1), rset.getString(2), rset.getString(3), rset.getInt(4), rset.getString(5)));
+			}
+		} finally {
+			DBUtil.close(con, pstmt, rset);
+		}
+		return list;
+	}
+
+	public CarRentTotalDTO paymentInformation(String memID, int carNo, int day, int agtNo, int option) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		MemberOneSalsDTO mo = null;
+		CarRentTotalDTO crt = null;
+		try {
+			mo = MemberDAO.getInstance().selectMemberOneSals(memID);
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(info.getProperty("selectCarAvailableOne"));
+			pstmt.setInt(1, carNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+
+				
+				crt = new CarRentTotalDTO(rset.getInt(1), rset.getString(2), rset.getInt(3), rset.getInt(4), rset.getString(5), agtNo, option, day, mo.getMemMileage(), mo.getDisValue(), (int) ((int)(rset.getInt(4) * day +Util.CAROPTION[option])*(1-mo.getDisValue())));
+				
+			}
+		} finally {
+			DBUtil.close(con, pstmt, rset);
+		}
+		return crt;
+	}
+	public Connection registerReservation(String memID, CarRentTotalDTO crt) throws SQLException{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = DBUtil.getConnectionNotAuto();
+			MileageDAO.getInstance().mileageUsage(memID, crt, con);
+			
+			pstmt = con.prepareStatement(info.getProperty("registerReservation"));
+		    
+			pstmt.setInt(1, crt.getDay());
+			if(crt.getCarOption() == 0) {
+				pstmt.setString(2, null);
+			} else {
+				pstmt.setInt(2, crt.getCarOption());
+			}
+			pstmt.setInt(3, crt.getResTotal());
+			pstmt.setInt(4, crt.getAgtNo());
+			pstmt.setString(5, memID);
+			
+			pstmt.executeUpdate();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(pstmt);
+		}
+		return con;
+	}
+	public Connection updateCarState(CarRentTotalDTO crt, Connection con) throws SQLException{
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = con.prepareStatement(info.getProperty("updateCarState"));
+			pstmt.setInt(1, crt.getCarNo());
+			pstmt.executeUpdate();
+		}finally {
+			DBUtil.close(pstmt);
+		}
+		return con;
+	}
+	
+	
+
+}

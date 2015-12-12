@@ -1,0 +1,42 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dao.MemberDAO;
+import model.dto.MemberDTO;
+import model.service.AdminServiceImpl;
+import model.service.MileageServiceImpl;
+import view.EndView;
+
+public class AdminController {
+
+	public static void allAgentBySalseList() {
+		
+	}
+	public static void allMemberList() {
+		try {
+			if (AdminServiceImpl.getInstance().allMemberList().size() == 0) {
+				EndView.msg("모든 회원 정보가 없습니다.");
+			} else {
+				EndView.successMsgAll(AdminServiceImpl.getInstance().allMemberList());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("모든 회원 정보 검색 실패, 재시도 하세요");
+		}
+	}
+	
+	public static void allGradeMemberList(String grade) {
+		try {
+			if (AdminServiceImpl.getInstance().allGradeMemberList(grade).size() == 0) {
+				EndView.msg("등급별 회원 정보가 없습니다.");
+			} else {
+				EndView.successMsgAll(AdminServiceImpl.getInstance().allGradeMemberList(grade));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			EndView.errorMsg("등급별 회원 정보 검색 실패, 재시도 하세요");
+		}
+	}
+}

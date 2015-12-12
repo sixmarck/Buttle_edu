@@ -1,0 +1,51 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dao.AdminDAO;
+import model.dto.MemberDTO;
+
+public class AdminServiceImpl implements AdminServiceIF {
+	
+	private static AdminServiceImpl instance = new AdminServiceImpl();
+	private static AdminDAO dao = AdminDAO.getInstance();
+	public static AdminServiceImpl getInstance(){
+		return instance;
+	}
+	
+	private AdminServiceImpl(){}
+	@Override
+	public ArrayList agentBySalsesList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList allAgentBySalseList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList agentReservationList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+//아래 3개 태경 부분.
+	@Override
+	public ArrayList<MemberDTO> allMemberList() throws SQLException {
+		return dao.allMemberList();
+	}
+
+	@Override
+	public ArrayList<MemberDTO> allGradeMemberList(String grade) throws SQLException {
+		return dao.allGradeMemberList(grade);
+	}
+
+	@Override
+	public ArrayList adminGradeMember() throws SQLException {
+		return null;
+	}
+	
+}

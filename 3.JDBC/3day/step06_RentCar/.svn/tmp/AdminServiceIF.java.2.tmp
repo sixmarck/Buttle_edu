@@ -1,0 +1,21 @@
+package model.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.dto.AgentBySalseDTO;
+<<<<<<< .mine
+import model.dto.MemberUpdateGradeDTO;
+=======
+import model.dto.MemberDTO;
+>>>>>>> .r99
+
+public interface AdminServiceIF {
+	ArrayList<AgentBySalseDTO> agentByOneSalsesList(int agtNo) throws SQLException;
+	ArrayList<AgentBySalseDTO> allAgentBySalseList() throws SQLException;
+	ArrayList<AgentBySalseDTO> agentReservationList(int agtNo) throws SQLException;
+	ArrayList<MemberDTO> allMemberList() throws SQLException;
+	ArrayList<MemberDTO> allGradeMemberList(String grade) throws SQLException;
+	ArrayList<MemberUpdateGradeDTO> adminGradeSelectMember() throws SQLException;
+	public boolean adminGradeUpdateMember(ArrayList<MemberUpdateGradeDTO> list) throws SQLException;
+}

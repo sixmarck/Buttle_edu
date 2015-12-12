@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- person.dtd 에서 제시한 스펙에 맞게 작성하겠다는 의미의 xml -->
+<!DOCTYPE persons PUBLIC "-//CSS//person dtd 1.0//EN"
+										"person.dtd">
+
+<persons>
+	<person>
+		<name>광욱</name>
+		<age>26</age>
+	</person>
+	<person>
+		<name>희재</name>
+		<age>25</age>
+	</person>
+</persons>
+

@@ -1,0 +1,22 @@
+package model.service;
+
+import java.sql.SQLException;
+
+import model.dto.MemberDTO;
+
+public class MemberServiceImpl implements MemberServiceIF {
+
+	@Override
+	public boolean registerMember(MemberDTO m) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public MemberDTO memberLogin(String memID, String memPW)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,3 @@
+#
+mileageCharge=INSERT INTO Mileage VALUES(milSeq.nextval, sysdate, ?, ?, ?)
+mileageUpdate=UPDATE Member SET memMileage=? WHERE memID=?

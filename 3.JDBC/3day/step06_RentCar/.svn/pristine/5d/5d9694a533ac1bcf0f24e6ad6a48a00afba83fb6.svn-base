@@ -1,0 +1,3 @@
+rateInformationList=SELECT a.agtLoc, c.carName, c.carKind, c.carPrice FROM Car c, Agent a WHERE c.agtNo=a.agtNo ORDER BY agtLoc, carPrice
+rentCarList=SELECT carNo, carName, carPax, carPrice, carFuel FROM Car WHERE agtNo=? AND carKind=? AND carState=UPPER(?)
+reservationInformationList=SELECT b.resNo,c.carName,b.resDate,b.resStartDate,b.resEndDate,b.resOption,b.resTotal FROM Member a, Reservation b, car c WHERE a.memID=b.memID AND b.carNo=c.carNo AND a.memID='id01' ORDER BY resDate DESC

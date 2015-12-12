@@ -1,0 +1,11 @@
+package model.service;
+
+import java.sql.SQLException;
+
+public interface MileageServiceIF {
+	// 마일리지 충전
+	public boolean mileageCharge(String mileCode, int inputMoney, String memid )  throws SQLException;
+			
+	/*//마일리지 사용(사용인지파악, id, 사용금액
+	public boolean mileageUsage(String mileCode, int usageMoney, String memid) throws SQLException;		*/
+}
